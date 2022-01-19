@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MorningSchool.Business.Interfaces;
+using MorningSchool.Business.Services;
 using MorningSchool.Migrations;
 using MorningSchool.Models;
 using MorningSchool.ViewModels.Mappings;
@@ -28,6 +30,9 @@ namespace MorningSchool
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ISeedDatabaseService, SeedDatabaseService>();
+            services.AddScoped<IAdminService, AdminService>();
+            
             services.AddAutoMapper(typeof(MappingProfile));
             
             services.AddControllersWithViews();
