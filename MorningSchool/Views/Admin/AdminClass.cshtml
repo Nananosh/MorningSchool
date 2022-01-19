@@ -1,0 +1,78 @@
+﻿<nav>
+    <div class="nav nav-tabs mb-5 d-flex justify-content-center" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link" asp-action="AdminPanel" aria-controls="nav-home" aria-selected="false">Админ панель</a>
+        <a class="nav-item nav-link active"  asp-action="AdminClass" asp-controller="Admin" aria-controls="nav-profile" aria-selected="false">Класс</a>
+    </div>
+</nav>
+
+<div id="grid"> </div>
+<script>
+    $("#grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("GetAllClasses", "Admin")",
+                        update: {
+                            url: "@Url.Action("EditClass", "Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        },
+                        destroy: {
+                            url: "@Url.Action("DeleteClass", "Admin")",
+                            dataType: "json",
+                            type: "DELETE"
+                        },
+                        create: {
+                            url: "@Url.Action("AddClass","Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        }
+                    },
+                    schema: {
+                        model: {
+                            id: "Id",
+                            fields: {
+                                Id: { from: "id", type: "number", validation: { required: true }, editable: false},
+                                ClassName: { from: "className", validation: { required: true } },
+                            }
+                        }
+                    },
+                    pageSize: 20,
+                    serverPaging: true,
+                    serverFiltering: true,
+                    serverSorting: true
+                },
+                toolbar: [
+                    {name: "create"}
+                ],
+                height: 550,
+                editable: "popup",
+                pageable: true,
+                columns: [
+                    {
+                        field:"Id",
+                        filterable: false
+                    },
+                    {
+                        field: "ClassName",
+                        title: "Название класса"
+                    },
+                    {
+                        command: "edit",
+                    },
+                    {
+                        command: "destroy"
+                    },
+                    {
+                        command: { text: "Добавить талоны", click: editAppointment }
+                    }
+                ]
+    });
+    function editAppointment(e){
+               e.preventDefault();
+               var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+               var redirectUrl = "@Url.Action("AddAppointmentByDoctor","Appointment")" + `/?id=${dataItem.Id}`
+               console.log(redirectUrl)
+               window.location.replace(redirectUrl);
+            }
+    
+</script>

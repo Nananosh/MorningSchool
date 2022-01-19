@@ -6,6 +6,14 @@
     <title>@ViewData["Title"] - MorningSchool</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
+    
+    <link href="~/lib/Kendo/styles/kendo.common.min.css" rel="stylesheet"/>
+        <link href="~/lib/Kendo/styles/kendo.default-purple.css" rel="stylesheet"/>
+        <script src="~/lib/Kendo/js/jquery.min.js"></script>
+        <script src="~/lib/Kendo/js/kendo.all.min.js"></script>
+        <script src="~/lib/Kendo/js/kendo.timezones.min.js"></script>
+        <script src="~/lib/Kendo/js/cultures/kendo.culture.ru-RU.min.js"></script>
+        <script src="~/lib/Kendo/js/messages/kendo.messages.ru-RU.min.js"></script>
 </head>
 <body>
 <header>
@@ -40,7 +48,7 @@
         &copy; 2022 - MorningSchool - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
 </footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
