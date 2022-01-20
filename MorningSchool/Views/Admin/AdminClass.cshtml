@@ -1,11 +1,13 @@
-﻿<nav>
+﻿<div class="container">
+<nav>
     <div class="nav nav-tabs mb-5 d-flex justify-content-center" id="nav-tab" role="tablist">
         <a class="nav-item nav-link" asp-action="AdminPanel" aria-controls="nav-home" aria-selected="false">Админ панель</a>
         <a class="nav-item nav-link active"  asp-action="AdminClass" asp-controller="Admin" aria-controls="nav-profile" aria-selected="false">Класс</a>
     </div>
 </nav>
 
-<div id="grid"> </div>
+<div id="grid"></div>
+</div>
 <script>
     $("#grid").kendoGrid({
                 dataSource: {
@@ -63,14 +65,14 @@
                         command: "destroy"
                     },
                     {
-                        command: { text: "Добавить талоны", click: editAppointment }
+                        command: { text: "Добавить мероприятие", click: editAppointment }
                     }
                 ]
     });
     function editAppointment(e){
                e.preventDefault();
                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-               var redirectUrl = "@Url.Action("AddAppointmentByDoctor","Appointment")" + `/?id=${dataItem.Id}`
+               var redirectUrl = "@Url.Action("AdminSchedule","Schedule")" + `/?id=${dataItem.Id}`
                console.log(redirectUrl)
                window.location.replace(redirectUrl);
             }
