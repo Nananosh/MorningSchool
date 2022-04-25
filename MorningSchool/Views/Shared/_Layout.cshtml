@@ -28,9 +28,6 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Schedule" asp-action="AllSchedule">Расписание</a>
-                    </li>
                 </ul>
                 <ul class="navbar-nav flex-grow-1 justify-content-end">
                     @if (User.Identity.IsAuthenticated)
@@ -46,7 +43,7 @@
                                 <div class="dropdown-divider"></div>
                                 @if (User.IsInRole("Admin"))
                                 {
-                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminPanel">Админка</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="">Админка</a>
                                 }
                                 <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Выход</a>
                             </div>

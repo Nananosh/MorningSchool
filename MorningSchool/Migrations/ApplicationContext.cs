@@ -11,7 +11,10 @@ namespace MorningSchool.Migrations
         {
         }
         
+        public DbSet<Cabinet> Cabinets { get; set; }
         public DbSet<Class> Classes { get; set; }
-        public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<ClassroomTeacher> ClassroomTeachers { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Theme> Themes { get; set; }
     }
 }

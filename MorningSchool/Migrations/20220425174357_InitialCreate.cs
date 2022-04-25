@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MorningSchool.Migrations
 {
-    public partial class CreateDatabase : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,16 +48,45 @@ namespace MorningSchool.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Classes",
+                name: "Cabinets",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ClassName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CabinetNumber = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classes", x => x.Id);
+                    table.PrimaryKey("PK_Cabinets", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClassroomTeachers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Surname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Lastname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    TelephoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassroomTeachers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Themes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ThemeName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Themes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -167,24 +196,59 @@ namespace MorningSchool.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Schedules",
+                name: "Classes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ClassId = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RecurrenceRule = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ClassName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    ClassroomTeacherId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Schedules", x => x.Id);
+                    table.PrimaryKey("PK_Classes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Schedules_Classes_ClassId",
+                        name: "FK_Classes_ClassroomTeachers_ClassroomTeacherId",
+                        column: x => x.ClassroomTeacherId,
+                        principalTable: "ClassroomTeachers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ThemeId = table.Column<int>(type: "int", nullable: false),
+                    ClassId = table.Column<int>(type: "int", nullable: true),
+                    CabinetId = table.Column<int>(type: "int", nullable: true),
+                    EventsName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EventManager = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    EventDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Events_Cabinets_CabinetId",
+                        column: x => x.CabinetId,
+                        principalTable: "Cabinets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Events_Classes_ClassId",
                         column: x => x.ClassId,
                         principalTable: "Classes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Events_Themes_ThemeId",
+                        column: x => x.ThemeId,
+                        principalTable: "Themes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -229,9 +293,24 @@ namespace MorningSchool.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schedules_ClassId",
-                table: "Schedules",
+                name: "IX_Classes_ClassroomTeacherId",
+                table: "Classes",
+                column: "ClassroomTeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_CabinetId",
+                table: "Events",
+                column: "CabinetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_ClassId",
+                table: "Events",
                 column: "ClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_ThemeId",
+                table: "Events",
+                column: "ThemeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -252,7 +331,7 @@ namespace MorningSchool.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Schedules");
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -261,7 +340,16 @@ namespace MorningSchool.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Cabinets");
+
+            migrationBuilder.DropTable(
                 name: "Classes");
+
+            migrationBuilder.DropTable(
+                name: "Themes");
+
+            migrationBuilder.DropTable(
+                name: "ClassroomTeachers");
         }
     }
 }

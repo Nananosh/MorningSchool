@@ -150,6 +150,21 @@ namespace MorningSchool.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("MorningSchool.Models.Cabinet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CabinetNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cabinets");
+                });
+
             modelBuilder.Entity("MorningSchool.Models.Class", b =>
                 {
                     b.Property<int>("Id")
@@ -158,40 +173,105 @@ namespace MorningSchool.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClassName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("ClassroomTeacherId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClassroomTeacherId");
 
                     b.ToTable("Classes");
                 });
 
-            modelBuilder.Entity("MorningSchool.Models.Schedule", b =>
+            modelBuilder.Entity("MorningSchool.Models.ClassroomTeacher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ClassId")
-                        .HasColumnType("int");
+                    b.Property<string>("Lastname")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Name")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("RecurrenceRule")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Surname")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("TelephoneNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
+                    b.ToTable("ClassroomTeachers");
+                });
+
+            modelBuilder.Entity("MorningSchool.Models.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CabinetId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EventDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EventManager")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("EventsName")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("ImgUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ThemeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CabinetId");
+
                     b.HasIndex("ClassId");
 
-                    b.ToTable("Schedules");
+                    b.HasIndex("ThemeId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("MorningSchool.Models.Theme", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ThemeName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Themes");
                 });
 
             modelBuilder.Entity("MorningSchool.Models.User", b =>
@@ -313,20 +393,38 @@ namespace MorningSchool.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MorningSchool.Models.Schedule", b =>
+            modelBuilder.Entity("MorningSchool.Models.Class", b =>
                 {
-                    b.HasOne("MorningSchool.Models.Class", "Class")
-                        .WithMany("Schedules")
-                        .HasForeignKey("ClassId")
+                    b.HasOne("MorningSchool.Models.ClassroomTeacher", "ClassroomTeacher")
+                        .WithMany()
+                        .HasForeignKey("ClassroomTeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Class");
+                    b.Navigation("ClassroomTeacher");
                 });
 
-            modelBuilder.Entity("MorningSchool.Models.Class", b =>
+            modelBuilder.Entity("MorningSchool.Models.Event", b =>
                 {
-                    b.Navigation("Schedules");
+                    b.HasOne("MorningSchool.Models.Cabinet", "Cabinet")
+                        .WithMany()
+                        .HasForeignKey("CabinetId");
+
+                    b.HasOne("MorningSchool.Models.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId");
+
+                    b.HasOne("MorningSchool.Models.Theme", "Theme")
+                        .WithMany()
+                        .HasForeignKey("ThemeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cabinet");
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Theme");
                 });
 #pragma warning restore 612, 618
         }

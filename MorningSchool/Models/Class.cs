@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MorningSchool.Models
 {
     public class Class
     {
         public int Id { get; set; }
+        [MaxLength(20)] 
         public string ClassName { get; set; }
-        [JsonIgnore]
-        public List<Schedule> Schedules { get; set; }
+        public ClassroomTeacher ClassroomTeacher { get; set; }
+        public int ClassroomTeacherId { get; set; }
     }
 }
