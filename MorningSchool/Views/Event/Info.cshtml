@@ -1,0 +1,47 @@
+﻿@model EventViewModel
+
+<div class="container">
+    <div class="mt-2">
+        <div class="h5">название: </div>
+        <p class="ml-4">@Model.EventsName</p>
+    </div>
+    @if (Model.Cabinet != null)
+    {
+        <div class="mt-2">
+            <div class="h5">кабинет: </div>
+            <p class="ml-4">@Model.Cabinet.CabinetNumber</p>
+        </div>
+    }
+    @if (Model.Class != null)
+    {
+        <div class="mt-2">
+            <div class="h5">класс: </div>
+            <p class="ml-4">@Model.Class.ClassName</p>
+        </div>
+
+            <div class="mt-2">
+                <div class="h5">руководитель: </div>
+                <p class="ml-4">@Model.Class.ClassroomTeacher.Surname @Model.Class.ClassroomTeacher.Name</p>
+            </div>
+    }
+    <div class="mt-2">
+        <div class="h5">описание: </div>
+        <p class="ml-4">@Model.Description</p>
+    </div>
+    <div class="mt-2">
+        <div class="h5">кто проводит: </div>
+        <p class="ml-4">@Model.EventManager</p>
+    </div>
+    <div class="mt-2">
+        <div class="h5">тема: </div>
+        <p class="ml-4">@Model.Theme.ThemeName</p>
+    </div>
+    <div class="mt-2">
+        <div class="h5">Дата: </div>
+        <p class="ml-4">@Model.EventDate</p>
+    </div>
+    <div class="mt-2">
+        <div class="h5">Картинка: </div>
+        <p class="ml-4">@Model.ImgUrl</p>
+    </div>
+</div>

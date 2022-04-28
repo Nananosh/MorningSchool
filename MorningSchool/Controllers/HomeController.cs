@@ -5,22 +5,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MorningSchool.Business.Interfaces;
+using MorningSchool.Constants;
 using MorningSchool.Models;
 
 namespace MorningSchool.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IEventService eventService;
+        
+        public HomeController(IEventService eventService)
         {
-            _logger = logger;
+            this.eventService = eventService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var lastEvents = await eventService.GetLastEvents(ConstantsMessages.EventsOnHomePage);
+            
+            return View(lastEvents);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

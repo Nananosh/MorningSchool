@@ -1,4 +1,5 @@
-﻿<div class="container">
+﻿@model List<EventViewModel>
+<div class="container">
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -24,6 +25,31 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
+    <div>
+        <div class="row ">
+            <div class="container">
+                <div class="col-12 bg-secondary shadow p-3 mb-5 bg-white rounded m-1 ">
+                    <div class="row justify-content-center">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-6 col-md-3 bg-secondary shadow p-3 mb-5 bg-white rounded m-2">
+                                @if (item.ImgUrl != null)
+                                {
+                                    <a href="/Event/Info/@item.Id">
+                                        <img src=@item.ImgUrl alt="..." class="img-thumbnail"> </a>
+                                }
+                                <a href="/Event/Info/@item.Id">
+                                    <h3 class="display-5">@item.EventsName</h3> </a>
+                                <h5 class="display-5">@item.EventManager</h5>
+                                <h5 class="display-5">@item.EventDate</h5>
+                            </div>
+                        }
+                               
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </div>
 <footer class="border-top footer text-muted mt-5">
