@@ -8,7 +8,7 @@
                 @foreach (var item in Model)
                 {
                     <div class="col-6 col-md-3 bg-secondary shadow p-3 mb-5 bg-white rounded m-2">
-                        @Html.DisplayFor(model => model.First().EventsName)
+                    <a href="/Event/Info/@item.Id">@Html.DisplayFor(model => model.First().EventsName)</a>
                         @Html.DisplayFor(model => model.First().EventManager)
                         @Html.DisplayFor(model => model.First().EventDate)
                     </div>
