@@ -1,0 +1,73 @@
+﻿<div id="grid"> </div>
+<script>
+    $("#grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("GetAllClassroomTeachers", "Admin")",
+                        update: {
+                            url: "@Url.Action("EditClassroomTeacher", "Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        },
+                        create: {
+                            url: "@Url.Action("AddClassroomTeacher", "Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        },
+                        destroy: {
+                            url: "@Url.Action("DeleteClassroomTeacher", "Admin")",
+                            dataType: "json",
+                            type: "DELETE"
+                        }
+                    },
+                    schema: {
+                        model: {
+                            id: "Id",
+                            fields: {
+                                Id: {from: "id", type: "number", editable: false},
+                                Name: { from: "name", validation: { required: true } },
+                                Surname: { from: "surname", validation: { required: true } },
+                                Lastname: { from: "lastname", validation: { required: true } },
+                                TelephoneNumber: { from: "telephoneNumber", validation: { required: true } },
+                            }
+                        }
+                    },
+                    pageSize: 20,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false
+        },
+        toolbar: [
+            { name: "create" }
+        ],
+                height: 550,
+                editable: "popup",
+                pageable: true,
+                filterable: true,
+                sortable: true,
+                columns: [
+                    {
+                        field: "Lastname",
+                        title: "Фамилия"
+                    },
+                    {
+                        field: "Name",
+                        title: "Имя"
+                    },
+                    {
+                        field: "Surname",
+                        title: "Отчество"
+                    },
+                    {
+                        field: "TelephoneNumber",
+                        title: "Номер телефона"
+                    },
+                    {
+                        command: "edit"
+                    },
+                    {
+                        command: "destroy"
+                    }
+                ]
+            });
+</script>

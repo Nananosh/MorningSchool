@@ -1,0 +1,191 @@
+﻿<div id="grid"> </div>
+<script>
+    $("#grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("GetAllEvents", "Admin")",
+                        update: {
+                            url: "@Url.Action("EditEvent", "Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        },
+                        create: {
+                            url: "@Url.Action("AddEvent", "Admin")",
+                            dataType: "json",
+                            type: "POST"
+                        },
+                        destroy: {
+                            url: "@Url.Action("DeleteEvent", "Admin")",
+                            dataType: "json",
+                            type: "DELETE"
+                        },
+                        parameterMap: function(options, operation) {
+                            if (operation === "update" || operation === "create") {
+                                options.eventDate = kendo.toString(options.eventDate, "dd/MM/yyyy hh:mm");
+                            }
+                            return options;
+                        }
+                    },
+                    schema: {
+                        model: {
+                            id: "Id",
+                            fields: {
+                                Id: {from: "id", type: "number", editable: false},
+                                Theme: { from: "theme", validation: { required: true } },
+                                ThemeId: { from: "themeId", validation: { required: true } },
+                                Class: { from: "class" },
+                                ClassId: { from: "classId" },
+                                Cabinet: { from: "cabinet" },
+                                CabinetId: { from: "cabinetId" },
+                                EventsName: { from: "eventsName", validation: { required: true } },
+                                Description: { from: "description", validation: { required: true } },
+                                EventManager: { from: "eventManager", validation: { required: true } },
+                                EventDate: { from: "eventDate", type: "date", validation: { required: true } },
+                                ImgUrl: { from: "imgUrl", },
+                            }
+                        }
+                    },
+                    pageSize: 20,
+                    serverPaging: false,
+                    serverFiltering: false,
+                    serverSorting: false
+        },
+        toolbar: [
+            { name: "create" }
+        ],
+                height: 550,
+                editable: "popup",
+                pageable: true,
+                filterable: true,
+                sortable: true,
+                columns: [
+                    {
+                        field: "Theme.themeName",
+                        title: "Тема",
+                        editor: themeEditor,
+                        template: function(dataItem) {
+                            if (dataItem.Theme == null)
+                                return '';
+                            else
+                                return dataItem.Theme.themeName;
+                        }
+                    },
+                    {
+                        field: "Class.className",
+                        title: "Класс",
+                        editor: classEditor,
+                        template: function(dataItem) {
+                            if (dataItem.Class == null)
+                                return '';
+                            else
+                                return dataItem.Class.className;
+                        }
+                    },
+                    {
+                        field: "Cabinet.cabinetNumber",
+                        title: "Кабинет",
+                        editor: cabinetEditor,
+                        template: function(dataItem) {
+                            if (dataItem.Cabinet == null)
+                                return '';
+                            else
+                                return dataItem.Cabinet.cabinetName;
+                        }
+                    },
+                    {
+                        field: "EventsName",
+                        title: "Название"
+                    },
+                    {
+                        field: "Description",
+                        title: "Описание"
+                    },
+                    {
+                        field: "EventManager",
+                        title: "Ведущий"
+                    },
+                    
+                    {
+                        field: "EventDate",
+                        title: "Дата",
+                        format: "{0:dd-MM-yyyy hh:mm}",
+                        editor: dateTimeEditor2
+                    },
+                    {
+                        field: "ImgUrl",
+                        title: "Ссылка на картинку"
+                    },
+                    {
+                        command: "edit"
+                    },
+                    {
+                        command: "destroy"
+                    }
+                ]
+            });
+    function dateTimeEditor2(container, options) {
+                    $('<input type="text" />')
+                        .appendTo(container)
+                        .kendoDateTimePicker({
+                            format: "MM/dd/yyyy hh:mm",
+                            value: new Date()
+                        });
+                }
+    
+    function themeEditor(container, options) {
+                       $('<input required name="ThemeId">')
+                           .appendTo(container)
+                           .kendoDropDownList({
+                               dataTextField: "themeName",
+                               dataValueField: "id",
+                               height: 500,
+                               dataSource: {
+                                   transport: {
+                                       read: {
+                                           url: "@Url.Action("GetAllThemes", "Admin")",
+                                           dataType: "json",
+                                           cache: false
+                                       }
+                                   }
+                               }
+                           });
+                   }
+                   
+    function classEditor(container, options) {
+                       $('<input name="ClassId">')
+                           .appendTo(container)
+                           .kendoDropDownList({
+                               dataTextField: "className",
+                               dataValueField: "id",
+                               height: 500,
+                               dataSource: {
+                                   transport: {
+                                       read: {
+                                           url: "@Url.Action("GetAllClasses", "Admin")",
+                                           dataType: "json",
+                                           cache: false
+                                       }
+                                   }
+                               }
+                           });
+                   }
+                   
+    function cabinetEditor(container, options) {
+                       $('<input name="CabinetId">')
+                           .appendTo(container)
+                           .kendoDropDownList({
+                               dataTextField: "cabinetNumber",
+                               dataValueField: "id",
+                               height: 500,
+                               dataSource: {
+                                   transport: {
+                                       read: {
+                                           url: "@Url.Action("GetAllCabinets", "Admin")",
+                                           dataType: "json",
+                                           cache: false
+                                       }
+                                   }
+                               }
+                           });
+                   }
+</script>
