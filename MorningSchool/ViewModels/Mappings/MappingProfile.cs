@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MorningSchool.Models;
 
 namespace MorningSchool.ViewModels.Mappings
 {
@@ -6,8 +7,11 @@ namespace MorningSchool.ViewModels.Mappings
     {
         public MappingProfile()
         {
-            // CreateMap<ClassViewModel, Models.Class>().ReverseMap();
-
+            CreateMap<ClassViewModel, Class>().ReverseMap();
+            CreateMap<CabinetViewModel, Cabinet>().ReverseMap();
+            CreateMap<ClassroomTeacherViewModel, ClassroomTeacher>().ReverseMap();
+            CreateMap<EventViewModel, Event>().ReverseMap();
+            CreateMap<ThemeViewModel, Theme>().ReverseMap();
         }
     }
 }
