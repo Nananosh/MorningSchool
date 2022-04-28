@@ -7,7 +7,7 @@ namespace MorningSchool.Models
         public int Id { get; set; }
         [MaxLength(20)] 
         public string ClassName { get; set; }
-        public ClassroomTeacher ClassroomTeacher { get; set; }
+        public ClassroomTeacherViewModel ClassroomTeacher { get; set; }
         public int ClassroomTeacherId { get; set; }
     }
 }

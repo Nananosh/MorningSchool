@@ -31,6 +31,7 @@ namespace MorningSchool
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ISeedDatabaseService, SeedDatabaseService>();
+            services.AddScoped<IAdminService, AdminService>();
 
             services.AddAutoMapper(typeof(MappingProfile));
             

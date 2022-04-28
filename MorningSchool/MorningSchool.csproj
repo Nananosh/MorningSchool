@@ -22,7 +22,6 @@
 
     <ItemGroup>
       <Folder Include="ViewModels\Admin" />
-      <Folder Include="Views\Admin" />
       <Folder Include="Views\Schedule" />
     </ItemGroup>
 
