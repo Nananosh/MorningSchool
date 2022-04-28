@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MorningSchool.Business.Interfaces;
+using MorningSchool.Constants;
 using MorningSchool.Migrations;
 using MorningSchool.Models;
 
@@ -24,22 +25,22 @@ namespace MorningSchool.Business.Services
 
         public async Task CreateStartAdmin()
         {
-            if (db.Users.Any(x => x.UserName == "Admin"))
+            if (db.Users.Any(x => x.UserName == ConstantsMessages.RoleAdmin))
             {
-                Console.WriteLine("Админ уже есть");
+                Console.WriteLine(ConstantsMessages.AdminAlreadyExists);
             }
             else
             {
                 var user = new User
                 {
-                    Email = "admin@morningschool.com", UserName = "Admin",
+                    Email = "admin@morningschool.com", UserName = ConstantsMessages.RoleAdmin,
                     UserImage = "https://img.icons8.com/material-outlined/200/000000/user--v1.png"
                 };
 
-                await userManager.CreateAsync(user, "123Snp-");
+                await userManager.CreateAsync(user, ConstantsMessages.RoleAdminPassword);
                 await db.SaveChangesAsync();
-                await userManager.AddToRoleAsync(user, "Admin");
-                Console.WriteLine("Админ создан");
+                await userManager.AddToRoleAsync(user, ConstantsMessages.RoleAdmin);
+                Console.WriteLine(ConstantsMessages.AdminSuccessfullyCreated);
             }
         }
 
