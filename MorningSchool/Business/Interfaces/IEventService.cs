@@ -10,6 +10,6 @@ namespace MorningSchool.Business.Interfaces
     {
         Task<List<EventViewModel>> GetLastEvents(int count);
         Task<EventViewModel> GetEventById(int id);
-        IQueryable<Event> GetEvents();
+        IEnumerable<EventViewModel> GetEvents();
     }
 }

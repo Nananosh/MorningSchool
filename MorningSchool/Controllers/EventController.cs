@@ -21,12 +21,11 @@ namespace MorningSchool.Controllers
             return View(eventById);
         }
 
-        public IActionResult GetEvents(int? page)
+        public IActionResult GetEvents()
         {
-            var pageSize = 3;
-            var pageNumber = (page ?? 1);
-
-            return View(eventService.GetEvents().ToPagedList(pageNumber, pageSize));
+            var events = eventService.GetEvents();
+            
+            return View(events);
 
         }
     }

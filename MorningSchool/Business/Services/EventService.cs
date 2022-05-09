@@ -49,10 +49,11 @@ namespace MorningSchool.Business.Services
             return mapper.Map<EventViewModel>(eventElement);
         }
 
-        public IQueryable<Event> GetEvents()
+        public IEnumerable<EventViewModel> GetEvents()
         {
-            return db.Events.AsQueryable();
+            var events = db.Events;
             
+            return mapper.Map<IEnumerable<EventViewModel>>(events);
         }
     }
 }

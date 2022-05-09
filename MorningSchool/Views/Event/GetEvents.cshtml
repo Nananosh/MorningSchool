@@ -1,4 +1,4 @@
-﻿@model IPagedList<Event>
+﻿@model IEnumerable<EventViewModel>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 <div class="row ">
@@ -18,6 +18,3 @@
         </div>
     </div>
 </div>
-Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
- 
-@Html.PagedListPager((IPagedList)Model, page => Url.Action("GetEvents",  new { page }))
