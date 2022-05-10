@@ -13,5 +13,6 @@ namespace MorningSchool.Models
         public string Lastname { get; set; }
         [MaxLength(20)] 
         public string TelephoneNumber { get; set; }
+        public string FullName => $"{Lastname} {Name} {Surname}";
     }
 }
