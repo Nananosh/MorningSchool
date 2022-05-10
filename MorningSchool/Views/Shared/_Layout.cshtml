@@ -30,6 +30,10 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav flex-grow-1 justify-content-end">
+                    <form method="get" asp-action="Search">
+                        <input type="text" name="eventName"/>
+                        <button type="submit" class="btn">Поиск</button>
+                    </form>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item dropdown">

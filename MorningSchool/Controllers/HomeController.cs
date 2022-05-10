@@ -27,6 +27,13 @@ namespace MorningSchool.Controllers
             return View(lastEvents);
         }
 
+        public async Task<IActionResult> Search(string eventName)
+        {
+            var getEventsByName = await eventService.GetEventsByName(eventName);
+            
+            return View(getEventsByName);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

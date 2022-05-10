@@ -1,20 +1,47 @@
-﻿@model IEnumerable<EventViewModel>
+﻿@model List<EventViewModel>
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<div class="row m-1" xmlns="http://www.w3.org/1999/html">
+     <form method="get" asp-action="GetEvents">
+     <div class="col-3 bg-secondary shadow p-3 mb-5 bg-white rounded m-1 align-self-start">
+         <div class="form-group">
+             <label>Дата от</label>
+             <input type="text" name="startDate" id="startDate" class="form-control"/>
+         </div>
+         <div class="form-group">
+             <label> Дата до</label>
+             <p/>
+             <input id="endDate" name="endDate" class="form-control"/>
+         </div>
+         <button type="submit" id="filter" class="btn btn-primary">Найти</button>
+     </div>
+     </form>
+    <div class="row">
+        <div class="container">
+            <div class="col-12 bg-secondary shadow p-3 mb-5 bg-white rounded m-1 ">
+                <div class="row justify-content-center">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-6 col-md-3 bg-secondary shadow p-3 mb-5 bg-white rounded m-2">
+                            @Html.DisplayFor(model => model.First().EventsName)
+                            @Html.DisplayFor(model => model.First().EventManager)
+                            @Html.DisplayFor(model => model.First().EventDate)
+                        </div>
+                    }
 
-<div class="row ">
-    <div class="container">
-        <div class="col-12 bg-secondary shadow p-3 mb-5 bg-white rounded m-1 ">
-            <div class="row justify-content-center">
-                @foreach (var item in Model)
-                {
-                    <div class="col-6 col-md-3 bg-secondary shadow p-3 mb-5 bg-white rounded m-2">
-                        @Html.DisplayFor(model => model.First().EventsName)
-                        @Html.DisplayFor(model => model.First().EventManager)
-                        @Html.DisplayFor(model => model.First().EventDate)
-                    </div>
-                }
-                               
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+});
+
+$("#startDate").kendoDatePicker({
+        format: "{0:dd/MM/yyyy}"
+    });
+$("#endDate").kendoDatePicker({
+        format: "{0:dd/MM/yyyy}"
+        });
+</script>
