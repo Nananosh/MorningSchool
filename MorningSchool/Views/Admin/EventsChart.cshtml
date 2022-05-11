@@ -1,0 +1,71 @@
+﻿<div class="container">
+    <div class="content">
+        <div class="row mt-5">
+            <p>Дата начала: 
+                <input id="startDate" class="mb-3" style="margin:15px;"/>
+                Дата окончания:
+                <input id="endDate" class="mb-3" style="margin:15px;"/>
+            </p>
+        </div>
+            <div id="chart"> </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        onFilterChange();
+    });
+    
+    $("#startDate").kendoDatePicker({
+        value: new Date('@DateTime.Now.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ss")'),
+        change: onFilterChange,
+        format: "{0:dd/MM/yyyy}"
+    });
+    
+    function onFilterChange() {
+        $("#chart").data("kendoChart").dataSource.read();
+        // var chart = $("#chart").data("kendoChart");
+        // console.log(chart);
+        // chart.refresh();
+    }
+    
+    $("#endDate").kendoDatePicker({
+        value: new Date('@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")'),
+        change: onFilterChange,
+        format: "{0:dd/MM/yyyy}"
+    });
+    
+    $("#chart").kendoChart({
+     dataSource: {
+        transport: {
+           read: { 
+               url: "@Url.Action("GetEventByDateFilter", "Admin")",
+               data: function () {
+                   var dateStart = $("#startDate").data("kendoDatePicker").value();
+                   var dateEnd = $("#endDate").data("kendoDatePicker").value();
+                   var dateStartConverted = kendo.toString(dateStart, "dd/MM/yyyy");
+                   var dateEndConverted = kendo.toString(dateEnd, "dd/MM/yyyy");
+                   return {
+                       dateStart: kendo.toString(dateStartConverted, "dd/MM/yyyy"),
+                       dateEnd: kendo.toString(dateEndConverted, "dd/MM/yyyy")
+                   };
+               }
+           },
+        }
+        },
+        title: {
+            text: "Отчёт по проведённым мероприятиям"
+        },
+        legend: {
+            position: "bottom"
+        },
+        series: [{
+            type: "area",
+            field: "count",
+            categoryField: "date"
+        }],
+        tooltip: {
+            visible: true,
+            template: "Мероприятий проведено : #= value #"
+        }
+    });
+    </script>
