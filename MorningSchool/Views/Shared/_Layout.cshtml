@@ -28,8 +28,21 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="GetEvents">Все мероприятия</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="AllTeacher">Все преподаватели</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="AllClass">Все классы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Rating">Рейтинг</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav flex-grow-1 justify-content-end">
+                    <form method="get" asp-action="Search">
+                        <input type="text" name="eventName"/>
+                        <button type="submit" class="btn">Поиск</button>
+                    </form>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item dropdown">

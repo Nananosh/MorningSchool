@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MorningSchool.Models;
@@ -10,6 +11,9 @@ namespace MorningSchool.Business.Interfaces
     {
         Task<List<EventViewModel>> GetLastEvents(int count);
         Task<EventViewModel> GetEventById(int id);
-        IQueryable<Event> GetEvents();
+        List<EventViewModel> GetEvents(DateTime? startDate, DateTime? endDate);
+        List<Rating> RatingByClass(DateTime? startDate, DateTime? endDate);
+        List<Rating> RatingByThemes(DateTime? startDate, DateTime? endDate);
+        Task<List<EventViewModel>> GetEventsByName(string name);
     }
 }
