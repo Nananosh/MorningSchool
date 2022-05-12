@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MorningSchool.Models;
+using MorningSchool.ViewModels.Admin;
 
 namespace MorningSchool.Business.Interfaces
 {
     public interface IAdminService
     {
+        Task<List<EventChartViewModel>> GetEventsByDateFilter(DateTime dateStart, DateTime dateEnd);
+        Task<List<EventChartByThemeViewModel>> GetEventByDateAndThemeFilter(DateTime dateStart, DateTime dateEnd);
+        Task<List<EventChartByClassViewModel>> GetEventByDateAndClassFilter(DateTime dateStart, DateTime dateEnd);
         Task<List<CabinetViewModel>> GetAllCabinets();
         Task<List<ClassViewModel>> GetAllClasses();
         Task<List<ClassroomTeacherViewModel>> GetAllClassroomTeachers();

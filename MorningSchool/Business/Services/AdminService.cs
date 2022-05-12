@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -6,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using MorningSchool.Business.Interfaces;
 using MorningSchool.Migrations;
 using MorningSchool.Models;
+using MorningSchool.ViewModels.Admin;
+using X.PagedList;
 
 namespace MorningSchool.Business.Services
 {
@@ -20,6 +23,47 @@ namespace MorningSchool.Business.Services
             _mapper = mapper;
         }
 
+        public async Task<List<EventChartViewModel>> GetEventsByDateFilter(DateTime dateStart, DateTime dateEnd)
+        {
+            var events = await _db.Events.Where(x => x.EventDate >= dateStart && x.EventDate <= dateEnd)
+                .ToList().OrderBy(x => x.EventDate).GroupBy(x => x.EventDate.Date)
+                .Select(x => new EventChartViewModel
+                {
+                    Count = x.Select(y => _db.Events.Count(z => z.EventDate.Date == y.EventDate.Date)).Count(),
+                    Date = x.Key.ToShortDateString()
+                }).ToListAsync();
+
+            return events;
+        }
+
+        public async Task<List<EventChartByThemeViewModel>> GetEventByDateAndThemeFilter(DateTime dateStart,
+            DateTime dateEnd)
+        {
+            var events = await _db.Events.Include(x => x.Theme)
+                .Where(x => x.EventDate >= dateStart && x.EventDate <= dateEnd)
+                .ToList().OrderBy(x => x.EventDate).GroupBy(x => x.Theme)
+                .Select(x => new EventChartByThemeViewModel
+                {
+                    Count = x.Select(y => _db.Events.Count(z => z.Theme == y.Theme)).Count(),
+                    Theme = x.Key.ThemeName
+                }).ToListAsync();
+
+            return events;
+        }
+
+        public async Task<List<EventChartByClassViewModel>> GetEventByDateAndClassFilter(DateTime dateStart, DateTime dateEnd)
+        {
+            var events = await _db.Events.Include(x => x.Class)
+                .Where(x => x.EventDate >= dateStart && x.EventDate <= dateEnd && x.Class != null)
+                .ToList().OrderBy(x => x.EventDate).GroupBy(x => x.Class)
+                .Select(x => new EventChartByClassViewModel
+                {
+                    Count = x.Select(y => _db.Events.Count(z => z.Class == y.Class)).Count(),
+                    ClassName = x.Key.ClassName
+                }).ToListAsync();
+
+            return events;
+        }
 
         public async Task<List<CabinetViewModel>> GetAllCabinets()
         {

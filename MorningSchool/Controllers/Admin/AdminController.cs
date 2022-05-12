@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,16 @@ namespace MorningSchool.Controllers.Admin
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;
-        
+
         public AdminController(IAdminService adminService)
         {
             _adminService = adminService;
+        }
+
+        [HttpGet]
+        public IActionResult EventsChart()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -21,29 +28,71 @@ namespace MorningSchool.Controllers.Admin
         {
             return View();
         }
-        
+
         [HttpGet]
         public IActionResult AdminClass()
         {
             return View();
         }
-        
+
         [HttpGet]
         public IActionResult AdminClassroomTeacher()
         {
             return View();
         }
-        
+
         [HttpGet]
         public IActionResult AdminEvent()
         {
             return View();
         }
-        
+
         [HttpGet]
         public IActionResult AdminTheme()
         {
             return View();
+        }
+        
+        [HttpGet]
+        public IActionResult ThemesChart()
+        {
+            return View();
+        }
+        
+        [HttpGet]
+        public IActionResult ClassesChart()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetEventByDateFilter(string dateStart, string dateEnd)
+        {
+            DateTime dStart = DateTime.Parse(dateStart);
+            DateTime dEnd = DateTime.Parse(dateEnd);
+            var events = await _adminService.GetEventsByDateFilter(dStart, dEnd);
+            
+            return Json(events);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetEventByDateAndThemeFilter(string dateStart, string dateEnd)
+        {
+            DateTime dStart = DateTime.Parse(dateStart);
+            DateTime dEnd = DateTime.Parse(dateEnd);
+            var events = await _adminService.GetEventByDateAndThemeFilter(dStart, dEnd);
+            
+            return Json(events);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetEventByDateAndClassFilter(string dateStart, string dateEnd)
+        {
+            DateTime dStart = DateTime.Parse(dateStart);
+            DateTime dEnd = DateTime.Parse(dateEnd);
+            var events = await _adminService.GetEventByDateAndClassFilter(dStart, dEnd);
+            
+            return Json(events);
         }
 
         [HttpGet]
@@ -63,7 +112,7 @@ namespace MorningSchool.Controllers.Admin
         {
             return Json(await _adminService.GetAllClassroomTeachers());
         }
-        
+
         [HttpGet]
         public async Task<JsonResult> GetAllEvents()
         {
@@ -75,7 +124,7 @@ namespace MorningSchool.Controllers.Admin
         {
             return Json(await _adminService.GetAllThemes());
         }
-        
+
         [HttpPost]
         public async Task<JsonResult> AddCabinet(CabinetViewModel model)
         {
@@ -93,7 +142,7 @@ namespace MorningSchool.Controllers.Admin
         {
             return Json(await _adminService.AddClassroomTeacher(model));
         }
-        
+
         [HttpPost]
         public async Task<JsonResult> AddEvent(EventViewModel model)
         {
@@ -105,7 +154,7 @@ namespace MorningSchool.Controllers.Admin
         {
             return Json(await _adminService.AddTheme(model));
         }
-        
+
         [HttpPost]
         public async Task<JsonResult> EditCabinet(CabinetViewModel model)
         {
@@ -123,7 +172,7 @@ namespace MorningSchool.Controllers.Admin
         {
             return Json(await _adminService.EditClassroomTeacher(model));
         }
-        
+
         [HttpPost]
         public async Task<JsonResult> EditEvent(EventViewModel model)
         {
@@ -135,7 +184,7 @@ namespace MorningSchool.Controllers.Admin
         {
             return Json(await _adminService.EditTheme(model));
         }
-        
+
         [HttpDelete]
         public async Task<JsonResult> DeleteCabinet(CabinetViewModel model)
         {
@@ -153,7 +202,7 @@ namespace MorningSchool.Controllers.Admin
         {
             return Json(await _adminService.DeleteClassroomTeacher(model));
         }
-        
+
         [HttpDelete]
         public async Task<JsonResult> DeleteEvent(EventViewModel model)
         {

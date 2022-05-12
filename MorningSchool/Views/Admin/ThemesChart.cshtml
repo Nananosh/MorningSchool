@@ -1,0 +1,86 @@
+﻿<script src="https://kendo.cdn.telerik.com/2022.1.119/js/jszip.min.js"></script>
+<div class="container">
+    <div class="content">
+        <div class="row mt-5">
+            <p>
+                Дата начала:
+                <input id="startDate" class="mb-3" style="margin:15px;"/>
+                Дата окончания:
+                <input id="endDate" class="mb-3" style="margin:15px;"/>
+            </p>
+        </div>
+        <div id="chart"></div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        onFilterChange();
+    });
+
+    $("#startDate").kendoDatePicker({
+        value: new Date('@DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd HH:mm:ss")'),
+        change: onFilterChange,
+        format: "{0:dd/MM/yyyy}"
+    });
+    
+    function onFilterChange() {
+          var a = $("#chart").data("kendoChart").dataSource.read();
+        }
+        
+    $("#endDate").kendoDatePicker({
+        value: new Date('@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")'),
+        change: onFilterChange,
+        format: "{0:dd/MM/yyyy}"
+        });
+</script>
+
+<script>
+ $("#chart").kendoChart({
+     dataSource: {
+         transport: {
+             read: {
+                 url: "@Url.Action("GetEventByDateAndThemeFilter", "Admin")",
+                 data: function() {
+                     var dateStart = $("#startDate").data("kendoDatePicker").value();
+                     var dateEnd = $("#endDate").data("kendoDatePicker").value();
+                     var dateStartConverted = kendo.toString(dateStart, "dd/MM/yyyy");
+                     var dateEndConverted = kendo.toString(dateEnd, "dd/MM/yyyy");
+                     return {
+                         dateStart: kendo.toString(dateStartConverted, "dd/MM/yyyy"),
+                         dateEnd: kendo.toString(dateEndConverted, "dd/MM/yyyy")
+                     };
+                 }
+             },
+         },
+         sort: {
+             field: "order",
+             dir: "asc"
+         }
+     },
+     title: {
+         position: "top",
+         text: "Отчёт по проведённых мероприятий по темам"
+     },
+     seriesDefaults: {
+         type: "pie",
+         labels: {
+             template: "#= dataItem.theme # - #= kendo.format('{0:P}', percentage)#",
+             position: "outsideEnd",
+             visible: true,
+             background: "transparent"
+         },
+     },
+     series: [{
+         field: "count",
+         categoryField: "resolution",
+         visibleInLegend: "true"
+     }],
+     tooltip: {
+         visible: true,
+         format: "N0",
+         template: "#= dataItem.theme # - #= kendo.format('{0:P}', percentage)#"
+     }
+ });
+</script>
+
