@@ -1,4 +1,4 @@
-﻿namespace MorningSchool.Models
+﻿namespace MorningSchool.ViewModels
 {
     public class Rating
     {

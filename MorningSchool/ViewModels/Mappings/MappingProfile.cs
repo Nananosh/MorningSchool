@@ -12,6 +12,8 @@ namespace MorningSchool.ViewModels.Mappings
             CreateMap<ClassroomTeacherViewModel, ClassroomTeacher>().ReverseMap();
             CreateMap<EventViewModel, Event>().ReverseMap();
             CreateMap<ThemeViewModel, Theme>().ReverseMap();
+            CreateMap<EventResultViewModel, EventResult>().ReverseMap();
+            CreateMap<EventSubscriptionViewModel, EventSubscription>().ReverseMap();
         }
     }
 }

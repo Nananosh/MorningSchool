@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MorningSchool.Models;
+using MorningSchool.ViewModels;
 using MorningSchool.ViewModels.Admin;
 
 namespace MorningSchool.Business.Interfaces
@@ -16,20 +17,24 @@ namespace MorningSchool.Business.Interfaces
         Task<List<ClassroomTeacherViewModel>> GetAllClassroomTeachers();
         Task<List<EventViewModel>> GetAllAddEvents();
         Task<List<ThemeViewModel>> GetAllThemes();
+        Task<List<EventResultViewModel>> GetAllEventResults();
         Task<CabinetViewModel> AddCabinet(CabinetViewModel model);
         Task<ClassViewModel> AddClass(ClassViewModel model);
         Task<ClassroomTeacherViewModel> AddClassroomTeacher(ClassroomTeacherViewModel model);
         Task<EventViewModel> AddEvent(EventViewModel model);
         Task<ThemeViewModel> AddTheme(ThemeViewModel model);
+        Task<EventResultViewModel> AddEventResult(EventResultViewModel model);
         Task<CabinetViewModel> EditCabinet(CabinetViewModel model);
         Task<ClassViewModel> EditClass(ClassViewModel model);
         Task<ClassroomTeacherViewModel> EditClassroomTeacher(ClassroomTeacherViewModel model);
         Task<EventViewModel> EditEvent(EventViewModel model);
         Task<ThemeViewModel> EditTheme(ThemeViewModel model);
+        Task<EventResultViewModel> EditEventResult(EventResultViewModel model);
         Task<CabinetViewModel> DeleteCabinet(CabinetViewModel model);
         Task<ClassViewModel> DeleteClass(ClassViewModel model);
         Task<ClassroomTeacherViewModel> DeleteClassroomTeacher(ClassroomTeacherViewModel model);
         Task<EventViewModel> DeleteEvent(EventViewModel model);
         Task<ThemeViewModel> DeleteTheme(ThemeViewModel model);
+        Task<EventResultViewModel> DeleteEventResult(EventResultViewModel model);
     }
 }

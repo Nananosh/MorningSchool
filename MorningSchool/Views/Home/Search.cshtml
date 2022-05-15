@@ -1,29 +1,25 @@
 ﻿@model List<EventViewModel>
 
 <div class="container">
-    <div class="row">
+    <div class="col-12 bg-secondary shadow p-3 mb-5 bg-white rounded m-1 ">
         <div class="col-lg-12 d-flex justify-content-center mb-5"><div class="h2">Найдено @Model.Count</div></div>
-        @foreach (var item in @Model)
-        {
-            <div class="col-4 mb-4">
-                <div class="card">
+        <div class="row justify-content-center">
+            @foreach (var item in Model)
+            {
+                <div class="col-6 col-md-3 bg-secondary shadow p-3 mb-5 bg-white rounded m-2">
                     @if (item.ImgUrl != null)
                     {
-                        <a href="/Event/Info/@item.Id">
-                            <img src=@item.ImgUrl alt="..." class="img-thumbnail"> </a>
+                        <a href="@Url.Action("Info", "Event", new {id = item.Id})">
+                            <img src=@item.ImgUrl alt="..." class="img-thumbnail responsive">
+                        </a>
                     }
-                    <div class="card-body">
-                        <h4 class="card-title">@item.EventsName</h4>
-                        <p class="card-text cropped-text">
-                            @item.EventManager <br/>
-                            @item.Class.ClassName
-                        </p>
-                        <div class="buy d-flex justify-content-between align-items-center">
-                            <a asp-action="Info" asp-controller="Event" asp-route-id="@item.Id" class="btn btn-primary mt-3"><i class="fas fa-shopping-cart"></i>Подробнее</a>
-                        </div>
-                    </div>
+                    <a href="@Url.Action("Info", "Event", new {id = item.Id})">
+                        <h3 class="display-5">@item.EventsName</h3>
+                    </a>
+                    <h5 class="display-5">@item.EventDate</h5>
+                    <h5 class="display-5 cropped-text">@item.Description</h5>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>

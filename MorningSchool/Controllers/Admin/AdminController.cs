@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MorningSchool.Business.Interfaces;
 using MorningSchool.Models;
+using MorningSchool.ViewModels;
 
 namespace MorningSchool.Controllers.Admin
 {
@@ -52,13 +53,19 @@ namespace MorningSchool.Controllers.Admin
         {
             return View();
         }
-        
+
+        [HttpGet]
+        public IActionResult AdminEventResult()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult ThemesChart()
         {
             return View();
         }
-        
+
         [HttpGet]
         public IActionResult ClassesChart()
         {
@@ -71,27 +78,27 @@ namespace MorningSchool.Controllers.Admin
             DateTime dStart = DateTime.Parse(dateStart);
             DateTime dEnd = DateTime.Parse(dateEnd);
             var events = await _adminService.GetEventsByDateFilter(dStart, dEnd);
-            
+
             return Json(events);
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetEventByDateAndThemeFilter(string dateStart, string dateEnd)
         {
             DateTime dStart = DateTime.Parse(dateStart);
             DateTime dEnd = DateTime.Parse(dateEnd);
             var events = await _adminService.GetEventByDateAndThemeFilter(dStart, dEnd);
-            
+
             return Json(events);
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetEventByDateAndClassFilter(string dateStart, string dateEnd)
         {
             DateTime dStart = DateTime.Parse(dateStart);
             DateTime dEnd = DateTime.Parse(dateEnd);
             var events = await _adminService.GetEventByDateAndClassFilter(dStart, dEnd);
-            
+
             return Json(events);
         }
 
@@ -124,6 +131,12 @@ namespace MorningSchool.Controllers.Admin
         {
             return Json(await _adminService.GetAllThemes());
         }
+        
+        [HttpGet]
+        public async Task<JsonResult> GetAllEventResults()
+        {
+            return Json(await _adminService.GetAllEventResults());
+        }
 
         [HttpPost]
         public async Task<JsonResult> AddCabinet(CabinetViewModel model)
@@ -153,6 +166,12 @@ namespace MorningSchool.Controllers.Admin
         public async Task<JsonResult> AddTheme(ThemeViewModel model)
         {
             return Json(await _adminService.AddTheme(model));
+        }
+        
+        [HttpPost]
+        public async Task<JsonResult> AddEventResult(EventResultViewModel model)
+        {
+            return Json(await _adminService.AddEventResult(model));
         }
 
         [HttpPost]
@@ -184,6 +203,12 @@ namespace MorningSchool.Controllers.Admin
         {
             return Json(await _adminService.EditTheme(model));
         }
+        
+        [HttpPost]
+        public async Task<JsonResult> EditEventResult(EventResultViewModel model)
+        {
+            return Json(await _adminService.EditEventResult(model));
+        }
 
         [HttpDelete]
         public async Task<JsonResult> DeleteCabinet(CabinetViewModel model)
@@ -213,6 +238,12 @@ namespace MorningSchool.Controllers.Admin
         public async Task<JsonResult> DeleteTheme(ThemeViewModel model)
         {
             return Json(await _adminService.DeleteTheme(model));
+        }
+        
+        [HttpDelete]
+        public async Task<JsonResult> DeleteEventResult(EventResultViewModel model)
+        {
+            return Json(await _adminService.DeleteEventResult(model));
         }
     }
 }

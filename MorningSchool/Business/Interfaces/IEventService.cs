@@ -15,5 +15,6 @@ namespace MorningSchool.Business.Interfaces
         List<Rating> RatingByClass(DateTime? startDate, DateTime? endDate);
         List<Rating> RatingByThemes(DateTime? startDate, DateTime? endDate);
         Task<List<EventViewModel>> GetEventsByName(string name);
+        Task<List<EventResultViewModel>> GetAllEventResultsByEventId(int id);
     }
 }

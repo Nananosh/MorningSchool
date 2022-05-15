@@ -13,24 +13,22 @@ namespace MorningSchool.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IEventService eventService;
-        
+        private readonly IEventService _eventService;
+
         public HomeController(IEventService eventService)
         {
-            this.eventService = eventService;
+            _eventService = eventService;
         }
 
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            var lastEvents = await eventService.GetLastEvents(ConstantsMessages.EventsOnHomePage);
-            
-            return View(lastEvents);
+            return View();
         }
 
         public async Task<IActionResult> Search(string eventName)
         {
-            var getEventsByName = await eventService.GetEventsByName(eventName);
-            
+            var getEventsByName = await _eventService.GetEventsByName(eventName);
+
             return View(getEventsByName);
         }
 

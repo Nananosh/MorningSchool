@@ -1,4 +1,4 @@
-﻿@model List<ClassViewModel>
+﻿@model List<MorningSchool.ViewModels.ClassViewModel>
 
 <div class="container">
     @foreach (var classItem in @Model)
@@ -8,7 +8,7 @@
                 <div class="mr-1 h2">@classItem.ClassName</div>
             </div>
             <div class="col-lg-12 d-flex justify-content-center align-items-baseline">
-                @classItem.ClassroomTeacher.FullName
+                Классный руководитель : @classItem.ClassroomTeacher.FullName
             </div>
         </div>
     }

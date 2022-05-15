@@ -1,47 +1,41 @@
 ﻿@model List<EventViewModel>
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-<div class="row m-1" xmlns="http://www.w3.org/1999/html">
-     <form method="get" asp-action="GetEvents">
-     <div class="col-3 bg-secondary shadow p-3 mb-5 bg-white rounded m-1 align-self-start">
-         <div class="form-group">
-             <label>Дата от</label>
-             <input type="text" name="startDate" id="startDate" class="form-control"/>
-         </div>
-         <div class="form-group">
-             <label> Дата до</label>
-             <p/>
-             <input id="endDate" name="endDate" class="form-control"/>
-         </div>
-         <button type="submit" id="filter" class="btn btn-primary">Найти</button>
-     </div>
-     </form>
-    <div class="row">
-        <div class="container">
-            <div class="col-12 bg-secondary shadow p-3 mb-5 bg-white rounded m-1 ">
-                <div class="row justify-content-center">
-                    @foreach (var item in Model)
-                    {
-                        <div class="col-6 col-md-3 bg-secondary shadow p-3 mb-5 bg-white rounded m-2">
-                            @Html.DisplayFor(model => model.First().EventsName)
-                            @Html.DisplayFor(model => model.First().EventManager)
-                            @Html.DisplayFor(model => model.First().EventDate)
-                        </div>
-                    }
-
+<div class="d-flex flex-row">
+    <div class="ml-1">
+        <form method="get" asp-action="GetEvents">
+            <div class="bg-secondary shadow p-3 mb-5 bg-white rounded align-self-start">
+                <div class="form-group">
+                    <label>Дата от</label>
+                    <input type="date" name="startDate" class="form-control" value="@if(ViewBag.StartDate != null){@ViewBag.StartDate.ToString("yyyy-MM-dd")}"/>
                 </div>
+                <div class="form-group">
+                    <label>Дата до</label>
+                    <input type="date" name="endDate" class="form-control" value="@if(ViewBag.EndDate != null){@ViewBag.EndDate.ToString("yyyy-MM-dd")}"/>
+                </div>
+                <button type="submit" id="filter" class="btn btn-success btn-block">Найти</button>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <div class="col-12 bg-secondary shadow p-3 mb-5 bg-white rounded m-1 ">
+            <div class="row justify-content-center">
+                @foreach (var item in Model)
+                {
+                    <div class="col-6 col-md-3 bg-secondary shadow p-3 mb-5 bg-white rounded m-2">
+                        @if (item.ImgUrl != null)
+                        {
+                            <a href="/Event/Info/@item.Id">
+                                <img src=@item.ImgUrl alt="..." class="img-thumbnail responsive">
+                            </a>
+                        }
+                        <a href="/Event/Info/@item.Id">
+                            <h3 class="display-5">@item.EventsName</h3>
+                        </a>
+                        <h5 class="display-5">@item.EventDate</h5>
+                        <h5 class="display-5 cropped-text">@item.Description</h5>
+                    </div>
+                }
             </div>
         </div>
     </div>
 </div>
 
-<script>
-$(document).ready(function() {
-});
-
-$("#startDate").kendoDatePicker({
-        format: "{0:dd/MM/yyyy}"
-    });
-$("#endDate").kendoDatePicker({
-        format: "{0:dd/MM/yyyy}"
-        });
-</script>

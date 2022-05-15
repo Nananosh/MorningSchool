@@ -1,8 +1,8 @@
 ﻿namespace MorningSchool.ViewModels
 {
-    public class CabinetViewModel
+    public class EventSubscriptionViewModel
     {
         public int Id { get; set; }
-        public int CabinetNumber { get; set; }
+        public string Email { get; set; }
     }
 }

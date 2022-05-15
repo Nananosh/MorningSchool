@@ -16,5 +16,7 @@ namespace MorningSchool.Migrations
         public DbSet<ClassroomTeacher> ClassroomTeachers { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Theme> Themes { get; set; }
+        public DbSet<EventResult> EventResults { get; set; }
+        public DbSet<EventSubscription> EventSubscriptions { get; set; }
     }
 }

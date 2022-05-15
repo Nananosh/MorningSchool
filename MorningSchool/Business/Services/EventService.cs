@@ -14,63 +14,56 @@ namespace MorningSchool.Business.Services
 {
     public class EventService : IEventService
     {
-        private readonly ApplicationContext db;
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly UserManager<User> userManager;
-        private readonly IMapper mapper;
+        private readonly ApplicationContext _db;
+        private readonly IMapper _mapper;
 
         public EventService(
             ApplicationContext db,
-            RoleManager<IdentityRole> roleManager,
-            UserManager<User> userManager,
             IMapper mapper)
         {
-            this.roleManager = roleManager;
-            this.db = db;
-            this.userManager = userManager;
-            this.mapper = mapper;
+            _db = db;
+            _mapper = mapper;
         }
-        
+
         public async Task<List<EventViewModel>> GetLastEvents(int count)
         {
-            var lastEvents = await db.Events.OrderByDescending(e => e.EventDate).Take(count).ToListAsync();
+            var lastEvents = await _db.Events.OrderByDescending(e => e.EventDate).Take(count).ToListAsync();
 
-            return mapper.Map<List<EventViewModel>>(lastEvents);
+            return _mapper.Map<List<EventViewModel>>(lastEvents);
         }
 
         public async Task<EventViewModel> GetEventById(int id)
         {
-            var eventElement = await db.Events
-                .Include(c=>c.Theme)
-                .Include(c=>c.Cabinet)
-                .Include(c=>c.Class)
+            var eventElement = await _db.Events
+                .Include(c => c.Theme)
+                .Include(c => c.Cabinet)
+                .Include(c => c.Class)
                 .ThenInclude(t => t.ClassroomTeacher)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
-            return mapper.Map<EventViewModel>(eventElement);
+            return _mapper.Map<EventViewModel>(eventElement);
         }
 
         public List<Rating> RatingByClass(DateTime? startDate, DateTime? endDate)
         {
-            var top = db.Events.Include(x => x.Class).Include(x => x.Theme).ToList();
+            var top = _db.Events.Include(x => x.Class).Include(x => x.Theme).Where(x => x.Class != null).ToList();
 
             if (startDate.HasValue)
             {
-                top = top.Where(x => x.EventDate >= startDate.Value).ToList();
+                top = top.Where(x => x.EventDate.Date >= startDate.Value.Date).ToList();
             }
 
             if (endDate.HasValue)
             {
-                top = top.Where(x => x.EventDate <= endDate.Value).ToList();
+                top = top.Where(x => x.EventDate.Date <= endDate.Value.Date).ToList();
             }
-            
+
             var groupingTop = top
                 .GroupBy(x => x.Class)
                 .Select(g => new Rating
                 {
                     Name = g.Key.ClassName,
-                    CountEvents = g.Sum(x => x.Id)
-
+                    CountEvents = top.Where(x => x.ClassId == g.Key.Id).ToList().Count() * 10
                 });
 
             var userTop = groupingTop.OrderByDescending(x => x.CountEvents).ToList();
@@ -80,35 +73,40 @@ namespace MorningSchool.Business.Services
 
         public async Task<List<EventViewModel>> GetEventsByName(string name)
         {
-            var events = await db.Events
+            var events = await _db.Events
                 .Include(x => x.Cabinet)
                 .Include(x => x.Class)
                 .Where(x => x.EventsName.Contains(name)).ToListAsync();
 
-            return mapper.Map<List<EventViewModel>>(events);
+            return _mapper.Map<List<EventViewModel>>(events);
         }
-        
+
+        public async Task<List<EventResultViewModel>> GetAllEventResultsByEventId(int id)
+        {
+            var eventResults = await _db.EventResults.Include(x => x.Event).Where(x => x.EventId == id).ToListAsync();
+            return _mapper.Map<List<EventResultViewModel>>(eventResults);
+        }
+
         public List<Rating> RatingByThemes(DateTime? startDate, DateTime? endDate)
         {
-            var top = db.Events.Include(x => x.Theme).Include(x => x.Class).ToList();
+            var top = _db.Events.Include(x => x.Theme).Include(x => x.Class).ToList();
 
             if (startDate.HasValue)
             {
-                top = top.Where(x => x.EventDate >= startDate.Value).ToList();
+                top = top.Where(x => x.EventDate.Date >= startDate.Value.Date).ToList();
             }
 
             if (endDate.HasValue)
             {
-                top = top.Where(x => x.EventDate <= endDate.Value).ToList();
+                top = top.Where(x => x.EventDate.Date <= endDate.Value.Date).ToList();
             }
-            
+
             var groupingTop = top
                 .GroupBy(x => x.Theme)
                 .Select(g => new Rating
                 {
                     Name = g.Key.ThemeName,
-                    CountEvents = g.Sum(x => x.Id)
-
+                    CountEvents = top.Where(x => x.ThemeId == g.Key.Id).ToList().Count() * 10
                 });
 
             var userTop = groupingTop.OrderByDescending(x => x.CountEvents).ToList();
@@ -118,19 +116,19 @@ namespace MorningSchool.Business.Services
 
         public List<EventViewModel> GetEvents(DateTime? startDate, DateTime? endDate)
         {
-            var events = db.Events.ToList();
+            var events = _db.Events.ToList();
 
             if (startDate.HasValue)
             {
-                events = events.Where(x => x.EventDate >= startDate.Value).ToList();
+                events = events.Where(x => x.EventDate.Date >= startDate.Value.Date).ToList();
             }
 
             if (endDate.HasValue)
             {
-                events = events.Where(x => x.EventDate <= endDate.Value).ToList();
+                events = events.Where(x => x.EventDate.Date <= endDate.Value.Date).ToList();
             }
-            
-            return mapper.Map<List<EventViewModel>>(events);
+
+            return _mapper.Map<List<EventViewModel>>(events).OrderByDescending(x => x.EventDate).ToList();
         }
     }
 }

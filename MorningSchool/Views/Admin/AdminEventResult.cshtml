@@ -5,19 +5,19 @@
     $("#grid").kendoGrid({
                 dataSource: {
                     transport: {
-                        read: "@Url.Action("GetAllClasses", "Admin")",
+                        read: "@Url.Action("GetAllEventResults", "Admin")",
                         update: {
-                            url: "@Url.Action("EditClass", "Admin")",
+                            url: "@Url.Action("EditEventResult", "Admin")",
                             dataType: "json",
                             type: "POST"
                         },
                         create: {
-                            url: "@Url.Action("AddClass", "Admin")",
+                            url: "@Url.Action("AddEventResult", "Admin")",
                             dataType: "json",
                             type: "POST"
                         },
                         destroy: {
-                            url: "@Url.Action("DeleteClass", "Admin")",
+                            url: "@Url.Action("DeleteEventResult", "Admin")",
                             dataType: "json",
                             type: "DELETE"
                         }
@@ -27,9 +27,9 @@
                             id: "Id",
                             fields: {
                                 Id: {from: "id", type: "number", editable: false},
-                                ClassName: { from: "className", validation: { required: true } },
-                                ClassroomTeacher: { from: "classroomTeacher", validation: { required: true } },
-                                ClassroomTeacherId: { from: "classroomTeacherId", validation: { required: true } },
+                                Event: { from: "event", validation: { required: true } },
+                                EventId: { from: "eventId", validation: { required: true } },
+                                ImageUrl: { from: "imageUrl", validation: { required: true } },
                             }
                         }
                     },
@@ -48,13 +48,13 @@
                 sortable: true,
                 columns: [
                     {
-                        field: "ClassName",
-                        title: "Номер класса"
+                        field: "ImageUrl",
+                        title: "Ссылка на картинку"
                     },
                     {
-                        field: "ClassroomTeacher.fullName",
-                        title: "Классный руководитель",
-                        editor: classroomTeacherEditor
+                        field: "Event.eventsName",
+                        title: "Название мероприятия",
+                        editor: eventEditor
                     },
                     {
                         command: "edit"
@@ -65,17 +65,17 @@
                 ]
             });
     
-    function classroomTeacherEditor(container, options) {
-                       $('<input required name="ClassroomTeacherId">')
+    function eventEditor(container, options) {
+                       $('<input required name="EventId">')
                            .appendTo(container)
                            .kendoDropDownList({
-                               dataTextField: "fullName",
+                               dataTextField: "eventsName",
                                dataValueField: "id",
                                height: 500,
                                dataSource: {
                                    transport: {
                                        read: {
-                                           url: "@Url.Action("GetAllClassroomTeachers", "Admin")",
+                                           url: "@Url.Action("GetAllEvents", "Admin")",
                                            dataType: "json",
                                            cache: false
                                        }

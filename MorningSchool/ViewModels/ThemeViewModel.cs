@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MorningSchool.Models
+namespace MorningSchool.ViewModels
 {
     public class ThemeViewModel
     {

@@ -1,4 +1,6 @@
-﻿<div id="grid"> </div>
+﻿<br>
+<div id="grid" class="mt-5 ml-3 mr-3">
+</div>
 <script>
     $("#grid").kendoGrid({
                 dataSource: {
@@ -89,7 +91,7 @@
                             if (dataItem.Cabinet == null)
                                 return '';
                             else
-                                return dataItem.Cabinet.cabinetName;
+                                return dataItem.Cabinet.cabinetNumber;
                         }
                     },
                     {

@@ -16,7 +16,7 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #F4E678">
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="url(/../../../gerb.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="">MorningSchool</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -26,44 +26,49 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="GetEvents">Все мероприятия</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="GetEvents">Мероприятия</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="AllTeacher">Все преподаватели</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="AllTeacher">Преподаватели</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="AllClass">Все классы</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="AllClass">Классы</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Rating">Рейтинг</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav flex-grow-1 justify-content-end">
-                    <form method="get" asp-action="Search">
-                        <input type="text" name="eventName"/>
-                        <button type="submit" class="btn">Поиск</button>
-                    </form>
+                <ul class="navbar-nav flex-grow-1 justify-content-between">
+                    <li class="nav-item mr-5 d-flex align-items-center">
+                        <form method="get" asp-action="Search" asp-controller="Home">
+                            <div class="d-flex flex-row justify-content-start">
+                            <input type="text" name="eventName" class="form-control" placeholder="Введите запрос"/>
+                            <button type="submit" class="btn btn-success ml-2">Поиск</button>
+                            </div>
+                        </form>
+                    </li>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
                                role="button" data-toggle="dropdown" aria-haspopup="true"
                                aria-expanded="false">
-                                <img id="avatar" class="rounded-circle" src="" value="" alt="avatar" style="height: 33px; width: 33px; object-fit:cover;"/>
+                                <img id="avatar" class="rounded-circle" src="https://img.icons8.com/color/48/000000/administrator-male-skin-type-7.png" value="" alt="avatar" style="height: 33px; width: 33px; object-fit:cover;"/>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" asp-route-id="@User.Claims.ElementAt(0).Value">@User.Claims.ElementAt(1).Value</a>
                                 <div class="dropdown-divider"></div>
                                 @if (User.IsInRole("Admin"))
                                 {
-                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminCabinet">Адм.кабинетов</a>
-                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminClassroomTeacher">Адм.класс.учителей</a>
-                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminTheme">Адм.тем</a>
-                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminClass">Адм.классов</a>
-                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminEvent">Адм.МП</a>
-                                    <a class="dropdown-item" asp-controller="Admin" asp-action="EventsChart">Отчёт по МП</a>
-                                    <a class="dropdown-item" asp-controller="Admin" asp-action="ThemesChart">Отчёт по Темам</a>
-                                    <a class="dropdown-item" asp-controller="Admin" asp-action="ClassesChart">Отчёт по Классам</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminCabinet">Администрирование кабинетов</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminClassroomTeacher">Администрирование классных руководителей</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminTheme">Администрирование тем мероприятий</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminClass">Администрирование классов</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminEvent">Администрирование мероприятий</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminEventResult">Администрирование результатов мероприятий</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="EventsChart">Отчёт по мероприятиям</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="ThemesChart">Отчёт по темам</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="ClassesChart">Отчёт по классам</a>
                                 }
                                 <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Выход</a>
                             </div>
@@ -81,8 +86,45 @@
     </nav>
 </header>
 <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
+    @RenderBody()
+</main>
+<br>
+<br>
+<footer class="footer" style="background-color: #F4E678">
+    <div class="container p-2">
+        <div class="row d-flex align-items-center">
+            <div class="col-lg-7 mt-3 mb-3 d-flex justify-content-left flex-column  text-black">
+                <div class="col-lg-12 h5">Адрес: Брестская область, г. Пинск, ул. Революционная, 2</div>
+                <div class="col-lg-12 h5">Телефон: 8 (0165) 64-30-31</div>
+                <div class="col-lg-12 h5">Электронная почта: gymn3@pinsk.edu.by</div>
+            </div>
+            <div class="col-lg-5 mt-3 mb-3 flex-column">
+                <div class="h5 text-black">
+                    Подпишитесь на рассылку о новых мероприятия
+                </div>
+                <div class="d-flex flex-row justify-content-start">
+                    <input type="email" class="form-control" id="email" placeholder="Введите вашу почту">
+                    <button type="submit" class="btn btn-success ml-2" onclick="subscribeEvent()">Подписаться</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<script>
+function subscribeEvent() {
+        const userEmail = $("#email").val();
+        $.ajax({
+            url: "@Url.Action("SubscribeEvent", "Event")" + `/?email=${userEmail}`,
+            type: 'post',
+            success: function (response) {
+                alert(response)
+            },
+            error: function (response) {
+                alert(response);
+            }
+        });
+    }
+</script>
 @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>

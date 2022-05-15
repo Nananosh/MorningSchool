@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using MorningSchool.Business.Interfaces;
 using MorningSchool.Migrations;
 using MorningSchool.Models;
+using MorningSchool.ViewModels;
 using MorningSchool.ViewModels.Admin;
 using X.PagedList;
 
@@ -16,11 +18,13 @@ namespace MorningSchool.Business.Services
     {
         private readonly ApplicationContext _db;
         private readonly IMapper _mapper;
+        private readonly INotificationService _notificationService;
 
-        public AdminService(ApplicationContext db, IMapper mapper)
+        public AdminService(ApplicationContext db, IMapper mapper, INotificationService notificationService)
         {
             _db = db;
             _mapper = mapper;
+            _notificationService = notificationService;
         }
 
         public async Task<List<EventChartViewModel>> GetEventsByDateFilter(DateTime dateStart, DateTime dateEnd)
@@ -51,7 +55,8 @@ namespace MorningSchool.Business.Services
             return events;
         }
 
-        public async Task<List<EventChartByClassViewModel>> GetEventByDateAndClassFilter(DateTime dateStart, DateTime dateEnd)
+        public async Task<List<EventChartByClassViewModel>> GetEventByDateAndClassFilter(DateTime dateStart,
+            DateTime dateEnd)
         {
             var events = await _db.Events.Include(x => x.Class)
                 .Where(x => x.EventDate >= dateStart && x.EventDate <= dateEnd && x.Class != null)
@@ -96,6 +101,12 @@ namespace MorningSchool.Business.Services
             return _mapper.Map<List<ThemeViewModel>>(themes);
         }
 
+        public async Task<List<EventResultViewModel>> GetAllEventResults()
+        {
+            var eventResults = await _db.EventResults.Include(x => x.Event).ToListAsync();
+            return _mapper.Map<List<EventResultViewModel>>(eventResults);
+        }
+
         public async Task<CabinetViewModel> AddCabinet(CabinetViewModel model)
         {
             var cabinet = _mapper.Map<Cabinet>(model);
@@ -129,6 +140,8 @@ namespace MorningSchool.Business.Services
             await _db.SaveChangesAsync();
             var addedEvent = await _db.Events.Include(x => x.Class).Include(x => x.Cabinet).Include(x => x.Theme)
                 .FirstOrDefaultAsync(x => x.Id == eEvent.Id);
+
+            _notificationService.SendNotificationAfterCreateEvent(_mapper.Map<EventViewModel>(addedEvent));
             return _mapper.Map<EventViewModel>(addedEvent);
         }
 
@@ -138,6 +151,16 @@ namespace MorningSchool.Business.Services
             await _db.Themes.AddAsync(theme);
             await _db.SaveChangesAsync();
             return _mapper.Map<ThemeViewModel>(theme);
+        }
+
+        public async Task<EventResultViewModel> AddEventResult(EventResultViewModel model)
+        {
+            var eventResult = _mapper.Map<EventResult>(model);
+            await _db.EventResults.AddAsync(eventResult);
+            await _db.SaveChangesAsync();
+            var addedEventResult = await _db.EventResults.Include(x => x.Event)
+                .FirstOrDefaultAsync(x => x.Id == eventResult.Id);
+            return _mapper.Map<EventResultViewModel>(addedEventResult);
         }
 
         public async Task<CabinetViewModel> EditCabinet(CabinetViewModel model)
@@ -195,6 +218,17 @@ namespace MorningSchool.Business.Services
             return _mapper.Map<ThemeViewModel>(editTheme);
         }
 
+        public async Task<EventResultViewModel> EditEventResult(EventResultViewModel model)
+        {
+            var editEventResult = await _db.EventResults.FirstOrDefaultAsync(x => x.Id == model.Id);
+            editEventResult.EventId = model.EventId;
+            editEventResult.ImageUrl = model.ImageUrl;
+            await _db.SaveChangesAsync();
+            var editedEventResult = await _db.EventResults.Include(x => x.Event)
+                .FirstOrDefaultAsync(x => x.Id == editEventResult.Id);
+            return _mapper.Map<EventResultViewModel>(editedEventResult);
+        }
+
         public async Task<CabinetViewModel> DeleteCabinet(CabinetViewModel model)
         {
             var cabinet = await _db.Cabinets.FirstOrDefaultAsync(x => x.Id == model.Id);
@@ -233,6 +267,14 @@ namespace MorningSchool.Business.Services
             _db.Themes.Remove(theme);
             await _db.SaveChangesAsync();
             return new ThemeViewModel();
+        }
+
+        public async Task<EventResultViewModel> DeleteEventResult(EventResultViewModel model)
+        {
+            var eventResult = await _db.EventResults.FirstOrDefaultAsync(x => x.Id == model.Id);
+            _db.EventResults.Remove(eventResult);
+            await _db.SaveChangesAsync();
+            return new EventResultViewModel();
         }
     }
 }
