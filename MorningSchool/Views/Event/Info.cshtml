@@ -1,56 +1,70 @@
-﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+﻿
 @model EventViewModel
 <div class="container mb-5">
     <div class="row">
-        <div class="col-lg-12 d-flex justify-content-center">
+        <div class="col-lg-12 d-flex justify-content-left mb-2">
+            <h1>@Model.EventsName</h1>
+        </div>
+        <div class="col-lg-12 d-flex justify-content-left">
             <img src="@Model.ImgUrl" alt="картинка мероприятия" style="max-width:1000px; max-height:500px;"/>
         </div>
     </div>
-    <div class="col-lg-12 mt-2" style="font-size: 25px">
-        <p>
-            Рады пригласить на мероприятие под названием "@Model.EventsName" котрое пройдёт @Model.EventDate.
-        </p>
+    <div class="col-lg-12 d-flex justify-content-left mt-2">
+        <h2>Подробности мероприятия</h2>
     </div>
-    @if (Model.Class == null)
+    <div class="col-lg-12 d-flex justify-content-left align-items-baseline mt-2">
+        <p class="h4">Дата проведения: </p>
+        <p class="ml-2" style="font-size: 25px">@Model.EventDate</p>
+    </div>
+    @if (Model.Class != null)
     {
-        <div class="col-lg-12" style="font-size: 25px">
-            <p>
-                Мероприятие проводится для всех.
-            </p>
+        <div class="col-lg-12 d-flex justify-content-left align-items-baseline mt-2">
+            <p class="h4">Участники: </p>
+            <p class="ml-2" style="font-size: 25px">@Model.Class.ClassName</p>
         </div>
-        <div class="col-lg-12" style="font-size: 25px">
-            <p>Для того, чтобы участвовать в мероприятии нужно прийти в фойе школы.</p>
+        <div class="col-lg-12 d-flex justify-content-left align-items-baseline mt-2">
+            <p class="h4">Место проведения: </p>
+            <p class="ml-2" style="font-size: 25px"> кабинет №@Model.Cabinet.CabinetNumber</p>
         </div>
     }
     else
     {
-        <div class="col-lg-12" style="font-size: 25px">
-            <p>
-                Мероприятие проводится для @Model.Class.ClassName класса.
-            </p>
+        <div class="col-lg-12 d-flex justify-content-left align-items-baseline mt-2">
+            <p class="h4">Участники: </p>
+            <p class="ml-2" style="font-size: 25px">все желающие</p>
         </div>
-        <div class="col-lg-12" style="font-size: 25px">
-            <p>Для того, чтобы участвовать нужно прийти в кабинет №@Model.Cabinet.CabinetNumber.</p>
+        <div class="col-lg-12 d-flex justify-content-left align-items-baseline mt-2">
+            <p class="h4">Место проведения: </p>
+            <p class="ml-2" style="font-size: 25px">главный вход школы</p>
         </div>
     }
-    <div class="col-lg-12" style="font-size: 25px">
-        <p>Темой мероприятия будет "@Model.Theme.ThemeName".</p>
+    <div class="col-lg-12 d-flex justify-content-left align-items-baseline mt-2">
+        <p class="h4">Тема: </p>
+        <p class="ml-2" style="font-size: 25px">@Model.Theme.ThemeName</p>
     </div>
-    <div class="col-lg-12" style="font-size: 25px">
-        <p>Проводить мероприятие будет @Model.EventManager.</p>
+    <div class="col-lg-12 d-flex justify-content-left align-items-baseline mt-2">
+        <p class="h4">Ведущий: </p>
+        <p class="ml-2" style="font-size: 25px">@Model.EventManager</p>
+    </div>
+    <div class="col-lg-12 d-flex justify-content-left align-items-baseline mt-2">
+        <p class="h4">Дата проведения: </p>
+        <p class="ml-2" style="font-size: 25px">@Model.EventDate</p>
+    </div>
+    <div class="col-lg-12 d-flex justify-content-left mt-2">
+        <h2>Описание мероприятия</h2>
     </div>
     <div class="col-lg-12" style="font-size: 25px">
         <p>@Model.Description</p>
     </div>
     @if (ViewBag.EventResult.Count > 0)
     {
-        <div class="row mt-5 mb-3 d-flex justify-content-center">
+        <div class="col-lg-12 mt-2 mb-3 d-flex justify-content-left">
             <h2>
                 Фотографии прошедшего мероприятия :
             </h2>
         </div>
-        <div class="row d-flex justify-content-center">
-            <div class="col-lg-9 d-flex justify-content-center">
+        <div class="col-lg-12 d-flex justify-content-lef">
+            <div class="col-lg-9 d-flex justify-content-lef">
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         @{ int count = 0; }

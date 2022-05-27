@@ -13,6 +13,6 @@ namespace MorningSchool.ViewModels
         public string Lastname { get; set; }
         [MaxLength(20)] 
         public string TelephoneNumber { get; set; }
-        public string FullName => $"{Lastname} {Name} {Surname}";
+        public string FullName => $"{Surname} {Name} {Lastname}";
     }
 }

@@ -23,7 +23,9 @@
                         },
                         parameterMap: function(options, operation) {
                             if (operation === "update" || operation === "create") {
-                                options.eventDate = kendo.toString(options.eventDate, "dd/MM/yyyy hh:mm");
+                                console.log(options)
+                                options.eventDate = kendo.toString(options.eventDate, "dd/MM/yyyy HH:mm");
+                                console.log(options)
                             }
                             return options;
                         }
@@ -110,7 +112,7 @@
                     {
                         field: "EventDate",
                         title: "Дата",
-                        format: "{0:dd-MM-yyyy hh:mm}",
+                        format: "{0:dd/MM/yyyy HH:mm}",
                         editor: dateTimeEditor2
                     },
                     {
@@ -126,10 +128,10 @@
                 ]
             });
     function dateTimeEditor2(container, options) {
-                    $('<input type="text" />')
+                    $('<input type="date" name="EventDate"/>')
                         .appendTo(container)
                         .kendoDateTimePicker({
-                            format: "MM/dd/yyyy hh:mm",
+                            format: "dd/MM/yyyy HH:mm",
                             value: new Date()
                         });
                 }
